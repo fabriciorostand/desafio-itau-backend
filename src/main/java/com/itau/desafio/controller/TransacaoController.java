@@ -1,5 +1,6 @@
 package com.itau.desafio.controller;
 
+import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
 import com.itau.desafio.service.TransacaoService;
 import jakarta.validation.Valid;
@@ -22,6 +23,15 @@ public class TransacaoController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @GetMapping("/estatistica")
+    public ResponseEntity<EstatisticaResponse> buscarEstatisticas() {
+        EstatisticaResponse estatisticas = service.buscarEstatisticas();
+
+        return ResponseEntity
+                .ok()
+                .body(estatisticas);
     }
 
 }
