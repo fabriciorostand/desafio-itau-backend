@@ -2,6 +2,7 @@ package com.itau.desafio.controller;
 
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
+import com.itau.desafio.dto.SegundosFiltragem;
 import com.itau.desafio.service.TransacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,21 @@ public class TransacaoController {
     }
 
     @GetMapping("/estatistica")
-    public ResponseEntity<EstatisticaResponse> buscarEstatisticas() {
-        EstatisticaResponse estatisticas = service.buscarEstatisticas();
+    public ResponseEntity<EstatisticaResponse> buscarEstatisticas(@RequestBody @Valid SegundosFiltragem segundosFiltragem) {
+        EstatisticaResponse estatisticas = service.buscarEstatisticas(segundosFiltragem);
 
         return ResponseEntity
                 .ok()
                 .body(estatisticas);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> limpar() {
+        service.limpar();
+
+        return ResponseEntity
+                .ok()
+                .build();
     }
 
 }
