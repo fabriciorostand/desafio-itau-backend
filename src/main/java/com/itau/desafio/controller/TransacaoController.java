@@ -2,9 +2,9 @@ package com.itau.desafio.controller;
 
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
-import com.itau.desafio.dto.SegundosFiltragem;
 import com.itau.desafio.service.TransacaoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class TransacaoController {
     }
 
     @GetMapping("/estatistica")
-    public ResponseEntity<EstatisticaResponse> buscarEstatisticas(@RequestBody @Valid SegundosFiltragem segundosFiltragem) {
+    public ResponseEntity<EstatisticaResponse> buscarEstatisticas(@RequestParam(name = "segundos", defaultValue = "60") @Positive Long segundosFiltragem) {
         EstatisticaResponse estatisticas = service.buscarEstatisticas(segundosFiltragem);
 
         return ResponseEntity

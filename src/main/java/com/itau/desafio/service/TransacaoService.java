@@ -2,7 +2,6 @@ package com.itau.desafio.service;
 
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
-import com.itau.desafio.dto.SegundosFiltragem;
 import com.itau.desafio.entity.Transacao;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class TransacaoService {
         transacoes.add(transacao);
     }
 
-    public EstatisticaResponse buscarEstatisticas(SegundosFiltragem segundosFiltragem) {
+    public EstatisticaResponse buscarEstatisticas(Long segundosFiltragem) {
         DoubleSummaryStatistics estatisticas = calcularEstatisticas(segundosFiltragem);
 
         if (estatisticas.getCount() == 0) {
@@ -38,8 +37,8 @@ public class TransacaoService {
         );
     }
 
-    private DoubleSummaryStatistics calcularEstatisticas(SegundosFiltragem segundosFiltragem) {
-        OffsetDateTime limite = OffsetDateTime.now().minusSeconds(segundosFiltragem.segundos());
+    private DoubleSummaryStatistics calcularEstatisticas(Long segundosFiltragem) {
+        OffsetDateTime limite = OffsetDateTime.now().minusSeconds(segundosFiltragem);
 
         return transacoes.stream()
                 .filter(t -> t.getDataHora().isAfter(limite))
