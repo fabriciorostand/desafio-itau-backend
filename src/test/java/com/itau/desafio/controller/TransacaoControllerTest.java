@@ -7,9 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -23,8 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(TransacaoController.class)
 @AutoConfigureJsonTesters
 class TransacaoControllerTest {
 
@@ -45,7 +43,7 @@ class TransacaoControllerTest {
     void registrarCenario1() throws Exception {
         RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
                 100,
-                OffsetDateTime.parse("2026-01-11T23:39:00-03:00")
+                OffsetDateTime.now().minusSeconds(10)
         );
 
         MockHttpServletResponse response = mvc.perform(post("/transacao")
@@ -60,12 +58,30 @@ class TransacaoControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver código http 422 quando a transação não for aceita por qualquer motivo " +
-            "(1 ou mais dos critérios de aceite não foram atendidos - por exemplo: uma transação com valor menor que 0")
+    @DisplayName("Deveria devolver código http 422 quando o valor for negativo")
     void registrarCenario2() throws Exception {
         RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
                 -100,
-                OffsetDateTime.parse("2026-01-11T23:39:00-03:00")
+                OffsetDateTime.now().minusSeconds(10)
+        );
+
+        MockHttpServletResponse response = mvc.perform(post("/transacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(registrarTransacaoRequestJson.write(
+                                registroRequest
+                        ).getJson())
+                )
+                .andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY.value());
+    }
+
+    @Test
+    @DisplayName("Deveria devolver código http 422 quando a data/hora for no futuro")
+    void registrarCenario3() throws Exception {
+        RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
+                100,
+                OffsetDateTime.now().plusSeconds(60)
         );
 
         MockHttpServletResponse response = mvc.perform(post("/transacao")
@@ -81,7 +97,7 @@ class TransacaoControllerTest {
 
     @Test
     @DisplayName("Deveria devolver código http 400 quando a API receber um JSON invalido")
-    void registrarCenario3() throws Exception {
+    void registrarCenario4() throws Exception {
         MockHttpServletResponse response = mvc.perform(post("/transacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ valor: 100, }"))
@@ -92,7 +108,7 @@ class TransacaoControllerTest {
 
     @Test
     @DisplayName("Deveria devolver código http 400 quando há ausencia de body")
-    void registrarCenario4() throws Exception {
+    void registrarCenario5() throws Exception {
         MockHttpServletResponse response = mvc.perform(post("/transacao"))
                 .andReturn().getResponse();
 
