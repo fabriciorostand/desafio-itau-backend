@@ -1,12 +1,8 @@
 ## Sobre
 
----
-
 API REST desenvolvida como parte do [desafio técnico de programação do Itaú Unibanco](DESAFIO.md). A aplicação permite registrar transações financeiras, calcular estatísticas em tempo real e apagar todos os dados de transações que estejam armazenados.
 
 ## Tecnologias Utilizadas
-
----
 
 * **Linguagem**: [Java 21](https://www.oracle.com/java/technologies/downloads/)
 * **Framework**: [Spring Boot](https://spring.io/projects/spring-boot)
@@ -18,8 +14,6 @@ API REST desenvolvida como parte do [desafio técnico de programação do Itaú 
 * **Gerenciador de Dependências**: [Maven](https://maven.apache.org/)
 
 ## Pré-requisitos
-
----
 
 Antes de começar, certifique-se de ter instalado em sua máquina:
 
@@ -35,8 +29,6 @@ Para rodar com Docker:
 * [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Rodando localmente
-
----
 
 1. **Clone o repositório:**
     
@@ -76,8 +68,6 @@ Para rodar com Docker:
 
 ## Rodando com Docker
 
----
-
 1. **Clone o repositório:**
    
    ```bash
@@ -102,8 +92,6 @@ Para rodar com Docker:
 
 ## Testes
 
----
-
 Para rodar os testes da aplicação:
 
 ```bash
@@ -111,8 +99,6 @@ mvn test
 ```
 
 ## Endpoints
-
----
 
 **GET** `/health`: Verifica se a API está respondendo.
 
@@ -123,7 +109,5 @@ mvn test
 **DELETE** `/transacao`: Apaga todas as transações armazenadas.
 
 ## Documentação da API
-
----
 
 Para acessar a documentação interativa (Swagger UI), com a aplicação em execução, acesse: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
