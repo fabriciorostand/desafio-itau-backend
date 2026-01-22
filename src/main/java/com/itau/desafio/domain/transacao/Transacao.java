@@ -1,4 +1,4 @@
-package com.itau.desafio.entity;
+package com.itau.desafio.domain.transacao;
 
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
 import lombok.AllArgsConstructor;

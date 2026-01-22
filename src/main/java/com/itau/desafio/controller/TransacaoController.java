@@ -2,7 +2,7 @@ package com.itau.desafio.controller;
 
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
-import com.itau.desafio.service.TransacaoService;
+import com.itau.desafio.domain.transacao.TransacaoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;

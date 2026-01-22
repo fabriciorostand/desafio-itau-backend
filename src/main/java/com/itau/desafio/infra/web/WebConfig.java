@@ -1,6 +1,6 @@
-package com.itau.desafio.config;
+package com.itau.desafio.infra.web;
 
-import com.itau.desafio.logging.LoggingInterceptor;
+import com.itau.desafio.infra.interceptor.LoggingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebConfiguration implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
     private final LoggingInterceptor loggingInterceptor ;
 

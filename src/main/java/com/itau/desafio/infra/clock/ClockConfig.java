@@ -1,4 +1,4 @@
-package com.itau.desafio.config;
+package com.itau.desafio.infra.clock;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,5 +1,6 @@
 package com.itau.desafio.service;
 
+import com.itau.desafio.domain.transacao.TransacaoService;
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
 import org.junit.jupiter.api.BeforeEach;

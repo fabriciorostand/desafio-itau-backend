@@ -1,4 +1,4 @@
-package com.itau.desafio.exception;
+package com.itau.desafio.infra.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.itau.desafio.logging;
+package com.itau.desafio.infra.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

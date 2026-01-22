@@ -1,8 +1,7 @@
-package com.itau.desafio.service;
+package com.itau.desafio.domain.transacao;
 
 import com.itau.desafio.dto.EstatisticaResponse;
 import com.itau.desafio.dto.RegistrarTransacaoRequest;
-import com.itau.desafio.entity.Transacao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
