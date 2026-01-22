@@ -17,10 +17,13 @@ public class LoggingInterceptor implements HandlerInterceptor {
         long tempoInicio = System.currentTimeMillis();
         request.setAttribute(ATRIBUTO_TEMPO_INICIO, tempoInicio);
 
-        log.info("{} {} - Recebida requisição", request.getMethod(), request.getRequestURI());
+        String metodo = request.getMethod();
+        String uri = request.getRequestURI();
+        String ip = obterIpCliente(request);
+
+        log.info("{} {} | IP: {} - Recebida requisição", metodo, uri, ip);
 
         log.debug("Parâmetros da URL da requisição: {}", request.getQueryString());
-        log.debug("IP do cliente: {}", obterIpCliente(request));
 
         return true;
     }
@@ -29,25 +32,21 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         Long tempoInicio = (Long) request.getAttribute(ATRIBUTO_TEMPO_INICIO);
 
-        long tempoDecorrido = tempoInicio != null
-                ? System.currentTimeMillis() - tempoInicio
-                : 0;
+        long duracao = tempoInicio != null ? System.currentTimeMillis() - tempoInicio : 0;
 
-        int statusCode = response.getStatus();
+        int status = response.getStatus();
         String metodo = request.getMethod();
         String uri = request.getRequestURI();
 
-        if (statusCode >= 200 && statusCode < 300) {
-            log.info("{} {} - Finalizado com sucesso [Status: {}] [Tempo: {}ms]", metodo, uri, statusCode, tempoDecorrido);
-        } else if (statusCode >= 400 && statusCode < 500) {
-            log.warn("{} {} - Erro do cliente [Status: {}] [Tempo: {}ms]", metodo, uri, statusCode, tempoDecorrido);
-        } else if (statusCode >= 500) {
-            log.error("{} {} - Erro do servidor [Status: {}] [Tempo: {}ms]", metodo, uri, statusCode, tempoDecorrido);
-        }
-
         if (ex != null) {
-            log.error("{} {} - Falha durante processamento fora do ControllerAdvice [Status: {}] [Tempo: {}ms]",
-                    metodo, uri, statusCode, tempoDecorrido);
+            log.error("{} {} - Falha durante processamento fora do ControllerAdvice [{}ms] - Status: {}",
+                    metodo, uri, duracao, status);
+        } else if (status >= 200 && status < 300) {
+            log.info("{} {} - Finalizado com sucesso [{}ms] - Status: {}", metodo, uri, duracao, status);
+        } else if (status >= 400 && status < 500) {
+            log.warn("{} {} - Erro do cliente [{}ms] - Status: {}", metodo, uri, duracao, status);
+        } else if (status >= 500) {
+            log.error("{} {} - Erro do servidor [{}ms] - Status: {}", metodo, uri, duracao, status);
         }
     }
 

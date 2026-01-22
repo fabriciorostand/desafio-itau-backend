@@ -21,11 +21,8 @@ public class TransacaoController {
 
     @PostMapping
     public ResponseEntity<Void> registrar(@RequestBody @Valid RegistrarTransacaoRequest request) {
-        log.debug("Registrando transação: {}", request);
-
         service.registrar(request);
 
-        log.info("Transação registrada com sucesso");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -33,11 +30,8 @@ public class TransacaoController {
 
     @GetMapping("/estatistica")
     public ResponseEntity<EstatisticaResponse> buscarEstatisticas(@RequestParam(name = "segundos", defaultValue = "60") @Positive Long segundosFiltragem) {
-        log.debug("Buscando estatísticas com filtro de {} segundos", segundosFiltragem);
-
         EstatisticaResponse estatisticas = service.buscarEstatisticas(segundosFiltragem);
 
-        log.debug("Estatísticas retornadas: {}", estatisticas);
         return ResponseEntity
                 .ok()
                 .body(estatisticas);
@@ -45,11 +39,8 @@ public class TransacaoController {
 
     @DeleteMapping
     public ResponseEntity<Void> limpar() {
-        log.warn("Limpando todas as transações");
-
         service.limpar();
 
-        log.warn("Todas as transações foram removidas");
         return ResponseEntity
                 .ok()
                 .build();

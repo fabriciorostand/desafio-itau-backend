@@ -19,7 +19,6 @@ public class ErrorHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Void> httpMessageNotReadable(HttpMessageNotReadableException ex) {
         log.warn("Requisição com payload malformado ou ilegível: {}", ex.getMessage());
-        log.debug("Detalhes da exceção: ", ex);
 
         return ResponseEntity
                 .badRequest()
@@ -35,7 +34,6 @@ public class ErrorHandler {
                 .toList();
 
         log.warn("Validação de argumentos falhou: {}", camposInvalidos);
-        log.debug("Detalhes da validação: ", ex);
 
         return ResponseEntity
                 .unprocessableEntity()
@@ -45,7 +43,6 @@ public class ErrorHandler {
     @ExceptionHandler(HandlerMethodValidationException.class)
     public  ResponseEntity<Void> handlerMethodValidation(HandlerMethodValidationException ex) {
         log.warn("Validação de parâmetros de método falhou: {}", ex.getMessage());
-        log.debug("Detalhes da validação: ", ex);
 
         return ResponseEntity
                 .unprocessableEntity()

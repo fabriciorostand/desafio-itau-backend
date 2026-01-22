@@ -27,20 +27,23 @@ public class TransacaoService {
 
         transacoes.add(transacao);
 
-        log.info("Transação registrada com sucesso - Valor: {}, DataHora: {}", transacao.getValor(), transacao.getDataHora());
-        log.debug("Total de transações na fila: {}", transacoes.size());
+        log.info("Transação registrada - Valor: {} | DataHora: {} | Total na fila: {}", transacao.getValor(), transacao.getDataHora(), transacoes.size());
     }
 
 
     public EstatisticaResponse buscarEstatisticas(Long segundosFiltragem) {
-        log.debug("Buscando estatísticas com filtro de {} segundos", segundosFiltragem);
+        long inicio = System.currentTimeMillis();
+
+        log.debug("Buscando estatísticas - Filtro: {}s", segundosFiltragem);
 
         DoubleSummaryStatistics estatisticas = calcularEstatisticas(segundosFiltragem);
 
         if (estatisticas.getCount() == 0) {
-            log.info("Nenhuma transação encontrada no período de {} segundos", segundosFiltragem);
+            log.info("Nenhuma transação encontrada no período de {}s", segundosFiltragem);
             return new EstatisticaResponse(0, 0, 0, 0, 0);
         }
+
+        long duracao = System.currentTimeMillis() - inicio;
 
         EstatisticaResponse response = new EstatisticaResponse(
                 estatisticas.getCount(),
@@ -50,8 +53,8 @@ public class TransacaoService {
                 estatisticas.getMax()
         );
 
-        log.info("Estatísticas calculadas - Count: {}, Sum: {}, Avg: {}, Min: {}, Max: {}",
-                response.count(), response.sum(), response.avg(),
+        log.info("Estatísticas calculadas [{}ms] - Count: {} | Sum: {} | Avg: {} | Min: {} | Max: {}",
+                duracao, response.count(), response.sum(), response.avg(),
                 response.min(), response.max());
 
         return response;
@@ -64,28 +67,24 @@ public class TransacaoService {
         long totalTransacoes = transacoes.size();
 
         DoubleSummaryStatistics estatisticas =  transacoes.stream()
-                .filter(t -> {
-                    boolean dentroDoLimite = !t.getDataHora().isBefore(limite);
-
-                    if (!dentroDoLimite) {
-                        log.trace("Transação filtrada (fora do período): DataHora={}", t.getDataHora());
-                    }
-
-                    return dentroDoLimite;
-                })
+                .filter(t -> !t.getDataHora().isBefore(limite))
                 .mapToDouble(Transacao::getValor)
                 .summaryStatistics();
 
-        log.debug("Filtradas {} de {} transações totais", estatisticas.getCount(), totalTransacoes);
+        log.debug("Filtro aplicado - Total: {} | Incluídas: {} | Excluídas: {}",
+                totalTransacoes, estatisticas.getCount(),
+                totalTransacoes - estatisticas.getCount());
+
         return estatisticas;
     }
 
     public void limpar() {
-        int quantidadeAntes = transacoes.size();
-        log.info("Iniciando limpeza de transações. Quantidade atual: {}", quantidadeAntes);
+        int quantidade = transacoes.size();
+        log.warn("Iniciando limpeza de transações - Total: {}", quantidade);
 
         transacoes.clear();
-        log.info("Transações limpas com sucesso. {} transações removidas", quantidadeAntes);
+
+        log.warn("Transações removidas - Total: {}", quantidade);
     }
 
 }
