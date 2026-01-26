@@ -8,6 +8,5 @@ import org.mapstruct.Mapper;
 public interface TransacaoMapper {
 
     Transacao paraEntidade(TransacaoRequest dto);
-    TransacaoRequest paraRegistrarResquest(Transacao entity);
 
 }

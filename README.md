@@ -104,7 +104,7 @@ Para rodar os testes da aplicação:
 mvn test
 ```
 
-Para acessar o relatório de cobertura abra o arquivo **index.html** localizado no diretório: **target/site/jacoco/**
+Para acessar o relatório de cobertura abra o arquivo `index.html` localizado no diretório: `target/site/jacoco/`
 
 ## Endpoints
 
