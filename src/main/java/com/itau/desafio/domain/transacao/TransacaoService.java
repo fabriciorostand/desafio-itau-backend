@@ -1,6 +1,7 @@
 package com.itau.desafio.domain.transacao;
 
-import com.itau.desafio.dto.RegistrarTransacaoRequest;
+import com.itau.desafio.dto.TransacaoRequest;
+import com.itau.desafio.mapstruct.TransacaoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ public class TransacaoService {
 
     private final List<Transacao> transacoes = new ArrayList<>();
     private final Clock clock;
+    private final TransacaoMapper mapper;
 
-    public void registrar(RegistrarTransacaoRequest request) {
+    public void registrar(TransacaoRequest request) {
         log.debug("Iniciando registro de transação: {}", request);
-        Transacao transacao = new Transacao(request);
+
+        Transacao transacao = mapper.paraEntidade(request);
 
         transacoes.add(transacao);
 

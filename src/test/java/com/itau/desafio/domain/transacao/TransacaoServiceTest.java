@@ -1,9 +1,11 @@
 package com.itau.desafio.domain.transacao;
 
-import com.itau.desafio.dto.RegistrarTransacaoRequest;
+import com.itau.desafio.dto.TransacaoRequest;
+import com.itau.desafio.mapstruct.TransacaoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -26,7 +28,10 @@ class TransacaoServiceTest {
                 ZoneOffset.UTC
         );
 
-        service = new TransacaoService(clock);
+        TransacaoMapper mapper = Mappers.getMapper(TransacaoMapper.class);
+
+
+        service = new TransacaoService(clock, mapper);
     }
 
     @Test
@@ -34,17 +39,17 @@ class TransacaoServiceTest {
     void registrarCenario1() {
         List<Transacao> listaTransacoes = service.buscarTransacoes(60L);
 
-        assertThat(listaTransacoes.size()).isZero();
+        assertThat(listaTransacoes).isEmpty();
     }
 
     @Test
     @DisplayName("Deve registrar transações corretamente quando valores são válidos")
     void registrarCenario2() {
         OffsetDateTime dataHora1 = OffsetDateTime.now(clock).minusSeconds(10);
-        OffsetDateTime dataHora2 = OffsetDateTime.now(clock).minusSeconds(20);
+        OffsetDateTime dataHora2 = OffsetDateTime.now(clock).minusSeconds(60);
 
-        service.registrar(new RegistrarTransacaoRequest(200.0, dataHora1));
-        service.registrar(new RegistrarTransacaoRequest(300.0, dataHora2));
+        service.registrar(new TransacaoRequest(200.0, dataHora1));
+        service.registrar(new TransacaoRequest(300.0, dataHora2));
 
         List<Transacao> listaTransacoes = service.buscarTransacoes(60L);
 
@@ -58,14 +63,14 @@ class TransacaoServiceTest {
     @Test
     @DisplayName("Deve limpar todas as transações")
     void limparCenario1() {
-        service.registrar(new RegistrarTransacaoRequest(200.0, OffsetDateTime.now(clock).minusSeconds(10)));
-        service.registrar(new RegistrarTransacaoRequest(100.0, OffsetDateTime.now(clock).minusSeconds(20)));
+        service.registrar(new TransacaoRequest(200.0, OffsetDateTime.now(clock).minusSeconds(10)));
+        service.registrar(new TransacaoRequest(100.0, OffsetDateTime.now(clock).minusSeconds(20)));
 
         service.limpar();
 
         List<Transacao> listaTransacoes = service.buscarTransacoes(60L);
 
-        assertThat(listaTransacoes.size()).isZero();
+        assertThat(listaTransacoes).isEmpty();
     }
 
 }

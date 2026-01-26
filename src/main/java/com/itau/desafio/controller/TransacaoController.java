@@ -1,6 +1,6 @@
 package com.itau.desafio.controller;
 
-import com.itau.desafio.dto.RegistrarTransacaoRequest;
+import com.itau.desafio.dto.TransacaoRequest;
 import com.itau.desafio.domain.transacao.TransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +26,7 @@ public class TransacaoController {
             @ApiResponse(responseCode = "422", description = "Campos não atendem os requisitos da transação"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<Void> registrar(@RequestBody @Valid RegistrarTransacaoRequest request) {
+    public ResponseEntity<Void> registrar(@RequestBody @Valid TransacaoRequest request) {
         service.registrar(request);
 
         return ResponseEntity

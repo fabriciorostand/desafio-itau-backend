@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.OffsetDateTime;
 
-public record RegistrarTransacaoRequest(
+public record TransacaoRequest(
 
         @NotNull
         @PositiveOrZero

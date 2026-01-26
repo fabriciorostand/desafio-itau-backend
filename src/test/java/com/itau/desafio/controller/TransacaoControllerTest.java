@@ -1,6 +1,6 @@
 package com.itau.desafio.controller;
 
-import com.itau.desafio.dto.RegistrarTransacaoRequest;
+import com.itau.desafio.dto.TransacaoRequest;
 import com.itau.desafio.domain.transacao.TransacaoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class TransacaoControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<RegistrarTransacaoRequest> registrarTransacaoRequestJson;
+    private JacksonTester<TransacaoRequest> transacaoRequestJson;
 
     @MockitoBean
     private TransacaoService service;
@@ -35,15 +35,15 @@ class TransacaoControllerTest {
     @Test
     @DisplayName("Deveria devolver código http 201 quando informações estão válidas")
     void registrarCenario1() throws Exception {
-        RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
+        TransacaoRequest request = new TransacaoRequest(
                 100.0,
                 OffsetDateTime.now().minusSeconds(10)
         );
 
         MockHttpServletResponse response = mvc.perform(post("/transacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrarTransacaoRequestJson.write(
-                            registroRequest
+                        .content(transacaoRequestJson.write(
+                            request
                         ).getJson())
                 )
                 .andReturn().getResponse();
@@ -54,15 +54,15 @@ class TransacaoControllerTest {
     @Test
     @DisplayName("Deveria devolver código http 422 quando o valor for negativo")
     void registrarCenario2() throws Exception {
-        RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
+        TransacaoRequest request = new TransacaoRequest(
                 -100.0,
                 OffsetDateTime.now().minusSeconds(10)
         );
 
         MockHttpServletResponse response = mvc.perform(post("/transacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrarTransacaoRequestJson.write(
-                                registroRequest
+                        .content(transacaoRequestJson.write(
+                                request
                         ).getJson())
                 )
                 .andReturn().getResponse();
@@ -73,15 +73,15 @@ class TransacaoControllerTest {
     @Test
     @DisplayName("Deveria devolver código http 422 quando a data/hora for no futuro")
     void registrarCenario3() throws Exception {
-        RegistrarTransacaoRequest registroRequest = new RegistrarTransacaoRequest(
+        TransacaoRequest request = new TransacaoRequest(
                 100.0,
                 OffsetDateTime.now().plusSeconds(60)
         );
 
         MockHttpServletResponse response = mvc.perform(post("/transacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrarTransacaoRequestJson.write(
-                                registroRequest
+                        .content(transacaoRequestJson.write(
+                                request
                         ).getJson())
                 )
                 .andReturn().getResponse();
