@@ -9,7 +9,9 @@ API REST desenvolvida como parte do [desafio técnico de programação do Itaú 
 * **Web Framework**: [Spring Web](https://docs.spring.io/spring-framework/reference/web/webmvc.html)
 * **Validação de dados**: [Spring Validation](https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html)
 * **Testes Automatizados**: [JUnit 5](https://junit.org/junit5/) e [Mockito](https://site.mockito.org/)
+* **Relatório de Cobertura de Testes**: [JaCoCo](https://www.jacoco.org/jacoco/trunk/index.html)
 * **Logs**: [Slf4j](https://www.slf4j.org/manual.html)
+* **Observabilidade**: [Spring Actuator](https://spring.io/guides/gs/actuator-service)
 * **Documentação da API**: [SpringDoc OpenAPI](https://github.com/springdoc/springdoc-openapi)
 * **Gerenciador de Dependências**: [Maven](https://maven.apache.org/)
 
@@ -27,6 +29,10 @@ Para rodar localmente:
 Para rodar com Docker:
 
 * [Docker](https://www.docker.com/products/docker-desktop)
+
+## Arquitetura
+
+![](docs/images/arquitetura.png)
 
 ## Rodando localmente
 
@@ -98,15 +104,15 @@ Para rodar os testes da aplicação:
 mvn test
 ```
 
-## Endpoints
+Para acessar o relatório de cobertura abra o arquivo **index.html** localizado no diretório: **target/site/jacoco/**
 
-**GET** `/health`: Verifica se a API está respondendo.
+## Endpoints
 
 **POST** `/transacao`: Registra uma nova transação.
 
-**GET** `/transacao/estatistica?segundos={valor}`: Calcula as estatísticas das transações dentro do intervalo de tempo especificado. O parâmetro `segundos` é opcional e define a janela de tempo em segundos (padrão: `60`).
-
 **DELETE** `/transacao`: Apaga todas as transações armazenadas.
+
+**GET** `/estatistica?segundos={valor}`: Calcula as estatísticas das transações dentro do intervalo de tempo especificado. O parâmetro `segundos` é opcional e define a janela de tempo em segundos (padrão: `60`).
 
 ## Documentação da API
 

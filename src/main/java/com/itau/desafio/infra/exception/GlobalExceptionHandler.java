@@ -8,13 +8,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
 @RestControllerAdvice
 @Slf4j
-public class ErrorHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Void> httpMessageNotReadable(HttpMessageNotReadableException ex) {
@@ -49,11 +50,25 @@ public class ErrorHandler {
                 .build();
     }
 
+    /* Exceção lançada quando uma requisição web para um recurso estático (como imagens, CSS, JS ou JSPs)
+    não consegue localizar o arquivo solicitado no caminho configurado */
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<Void> noResourceFound() {
+    public ResponseEntity<Void> noResourceFound(NoResourceFoundException ex) {
+        log.warn("Recurso não econtrado: {}", ex.getResourcePath());
 
         return ResponseEntity
                 .notFound()
+                .build();
+    }
+
+    /* Exceção lançada quando o Spring tenta converter um parâmetro de uma requisição para o tipo esperado por um metodo controlador,
+    mas falha devido à incompatibilidade de tipos */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> methodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.warn("Parâmetro '{}' inválido, deve ser do tipo {}", ex.getName(), ex.getRequiredType().getSimpleName());
+
+        return ResponseEntity
+                .badRequest()
                 .build();
     }
 
@@ -65,5 +80,4 @@ public class ErrorHandler {
                 .internalServerError()
                 .build();
     }
-
 }

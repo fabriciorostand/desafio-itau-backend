@@ -10,7 +10,7 @@ public record RegistrarTransacaoRequest(
 
         @NotNull
         @PositiveOrZero
-        double valor,
+        Double valor,
 
         @NotNull
         @PastOrPresent

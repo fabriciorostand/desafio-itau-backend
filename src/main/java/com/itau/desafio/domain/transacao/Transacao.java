@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Getter
 public class Transacao {
 
-    private double valor;
+    private Double valor;
     private OffsetDateTime dataHora;
 
     // Construtor para converter RegistrarTransacaoRequest (DTO) para Transacao (Entidade)

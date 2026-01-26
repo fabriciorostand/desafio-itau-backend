@@ -14,7 +14,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        long tempoInicio = System.currentTimeMillis();
+        Long tempoInicio = System.currentTimeMillis();
         request.setAttribute(ATRIBUTO_TEMPO_INICIO, tempoInicio);
 
         String metodo = request.getMethod();
@@ -32,7 +32,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         Long tempoInicio = (Long) request.getAttribute(ATRIBUTO_TEMPO_INICIO);
 
-        long duracao = tempoInicio != null ? System.currentTimeMillis() - tempoInicio : 0;
+        Long duracao = tempoInicio != null ? System.currentTimeMillis() - tempoInicio : 0;
 
         int status = response.getStatus();
         String metodo = request.getMethod();

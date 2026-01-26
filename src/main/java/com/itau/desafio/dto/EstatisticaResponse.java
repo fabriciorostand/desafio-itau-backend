@@ -2,10 +2,10 @@ package com.itau.desafio.dto;
 
 public record EstatisticaResponse(
 
-        long count,
-        double sum,
-        double avg,
-        double min,
-        double max) {
+        Long count,
+        Double sum,
+        Double avg,
+        Double min,
+        Double max) {
 
 }
